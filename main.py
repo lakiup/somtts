@@ -1,4 +1,4 @@
-asyncio muhiim muu uyahay bot kaan mase waa laga saari karaa?
+
 
 import os
 import asyncio
@@ -10,7 +10,7 @@ import telebot
 import edge_tts
 from telebot.types import InlineKeyboardMarkup, InlineKeyboardButton, Update
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "8508232988:AAEZOvGOU9WNtC5JIhQWV68LL3gI3i-2RYg")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "8441374183:AAF_65z_uqIMNhAZi5gJ_vdYPEWvUwQ9mO8")
 WEBHOOK_URL_BASE = os.environ.get("WEBHOOK_URL_BASE", "https://texttospeechbbot.onrender.com")
 PORT = int(os.environ.get("PORT", "8080"))
 WEBHOOK_PATH = os.environ.get("WEBHOOK_PATH", "/webhook/")
