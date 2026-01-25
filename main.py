@@ -23,7 +23,7 @@ flask_app = Flask(__name__)
 
 ADMIN_ID = 6964068910
 CURRENT_VOICE_NAME = "so-SO-MuuseNeural"
-CURRENT_VOICE_LABEL = "Nin "
+CURRENT_VOICE_LABEL = "Cabdi"
 
 user_rate_input_mode = {}
 user_pitch_input_mode = {}
@@ -126,8 +126,8 @@ def generate_tts_filename(user_id):
 def create_voice_inline_keyboard():
     keyboard = InlineKeyboardMarkup(row_width=2)
     keyboard.add(
-        InlineKeyboardButton("Nin ", callback_data="voice_male"),
-        InlineKeyboardButton("Naag ", callback_data="voice_female")
+        InlineKeyboardButton("Cabdi", callback_data="voice_male"),
+        InlineKeyboardButton("Muno", callback_data="voice_female")
     )
     return keyboard
 
@@ -171,11 +171,11 @@ def callback_set_voice(call):
     global CURRENT_VOICE_NAME, CURRENT_VOICE_LABEL
     if call.data == "voice_male":
         CURRENT_VOICE_NAME = "so-SO-MuuseNeural"
-        CURRENT_VOICE_LABEL = "Nin "
+        CURRENT_VOICE_LABEL = "Cabdi"
     elif call.data == "voice_female":
         CURRENT_VOICE_NAME = "so-SO-UbaxNeural"
-        CURRENT_VOICE_LABEL = "Naag "
-    bot.answer_callback_query(call.id, f"Codka waa la doortay: {CURRENT_VOICE_LABEL}")
+        CURRENT_VOICE_LABEL = "Muno"
+    bot.answer_callback_query(call.id, f"Hada Codka waa {CURRENT_VOICE_LABEL}")
     bot.send_message(call.message.chat.id, "✍️ Hadda ii soo dir qoraalka aad rabto in la akhriyo.")
 
 @bot.message_handler(commands=['rate'])
