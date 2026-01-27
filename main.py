@@ -8,7 +8,7 @@ import edge_tts
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, Update, InlineKeyboardMarkup, InlineKeyboardButton
 import re
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "8508232988:AAEZOvGOU9WNtC5JIhQWV68LL3gI3i-2RYg")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "8380607635:AAHTqi2MS0K4PwtWZlSjZrvQfg1Ja8GMeis")
 WEBHOOK_URL_BASE = os.environ.get("WEBHOOK_URL_BASE", "https://texttospeechbbot.onrender.com")
 PORT = int(os.environ.get("PORT", "8080"))
 WEBHOOK_PATH = os.environ.get("WEBHOOK_PATH", "/webhook/")
