@@ -189,7 +189,7 @@ def start(message):
         reply_to_message_id=message.message_id
     )
 
-@bot.message_handler(func=lambda m: m.text in ["Ubax 👩🏻‍🦳", "Muuse 👨🏻‍🦱", "Codka wiilka 👶"])
+@bot.message_handler(func=lambda m: m.text in ["Ubax 👩🏻‍🦳", "Muuse 👨🏻‍🦱", "Codka wiilka 👶🏻"])
 def set_voice(message):
     choice = message.text
     uid_str = str(message.from_user.id)
@@ -201,7 +201,7 @@ def set_voice(message):
         vlabel = "Muuse 👨🏻‍🦱"
     else:
         vname = "so-SO-MuuseNeural"
-        vlabel = "Codka wiilka"
+        vlabel = "Codka wiilka 👶🏻"
         user_pitch_settings[uid_str] = 45
         upsert_user_setting(message.from_user.id, pitch=45)
     user_voice_name[uid_str] = vname
