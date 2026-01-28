@@ -15,7 +15,7 @@ import edge_tts
 from telebot.types import ReplyKeyboardMarkup, KeyboardButton, Update, InlineKeyboardMarkup, InlineKeyboardButton
 from pymongo import MongoClient
 
-BOT_TOKEN = os.environ.get("BOT_TOKEN", "")
+BOT_TOKEN = os.environ.get("BOT_TOKEN", "8380607635:AAEduw8HMgflp0pcgkRD_Mx2VThuISTJM6c")
 WEBHOOK_URL_BASE = os.environ.get("WEBHOOK_URL_BASE", "")
 PORT = int(os.environ.get("PORT", "8080"))
 WEBHOOK_PATH = os.environ.get("WEBHOOK_PATH", "/webhook/")
