@@ -184,7 +184,7 @@ def start(message):
     keyboard = create_voice_keyboard()
     bot.send_message(
         message.chat.id,
-        "👋🏻 Soo dhawow! Waxaan ahay Somali Text to Speech bot waxaa i samee yay zack3d:\n\nii soo dir qoraal si aan ugu badalo cod💗n\n Waxyaabahaan ogow kahor intaadan i isticmaalin\n1 qoraal ka aad soodiraysid ha ahaado only somali haday erayo english ku jiraan botka si saxa uma aqrin karo xataa haday erayo English  kujiraa  u qor hab dhawaaq somali tusaale  video ❌> fiidiyow ✅ youtube❌ > yuutuub ✅ ",
+        "👋🏻 Soo dhawow! Waxaan ahay Somali Text to Speech bot waxaa i samee yay zack3d:\n\nii soo dir qoraal si aan ugu badalo cod💗n\n Waxyaabahaan ogow kahor intaadan i isticmaalin\n1 qoraal ka aad soodiraysid ha ahaado only somali haday erayo english ku jiraan botka si saxa uma aqrin karo xataa haday erayo English  kujiraan u qor hab dhawaaq somali tusaale  video ❌> fiidiyow ✅ youtube❌ > yuutuub ✅n\n\ taabo Menu si aad u badasho xawaaraha codka ama dhawaaqa ",
         reply_markup=keyboard,
         reply_to_message_id=message.message_id
     )
