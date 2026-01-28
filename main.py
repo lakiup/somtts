@@ -184,7 +184,7 @@ def start(message):
     keyboard = create_voice_keyboard()
     bot.send_message(
         message.chat.id,
-        "👋🏻 Soo dhawow! Waxaan ahay Somali Text to Speech bot waxaa i samee yay zack3d:\n\nii soo dir qoraal si aan ugu badalo cod💗\n taabo meesha ayku qoran tahay Menu si aad u badasho Speedka codka iyo dhawaaqa",
+        "👋🏻 Soo dhawow! Waxaan ahay Somali Text to Speech bot waxaa i samee yay zack3d:\n\nii soo dir qoraal si aan ugu badalo cod💗\n\ntaabo meesha ayku qoran tahay Menu\n\nsi aad u badasho Speed ka codka iyo dhawaaqa",
         reply_markup=keyboard,
         reply_to_message_id=message.message_id
     )
@@ -201,9 +201,9 @@ def set_voice(message):
         vlabel = "Muuse 👨🏻‍🦱"
     else:
         vname = "so-SO-MuuseNeural"
-        vlabel = "Codka wiilka 👶"
-        user_pitch_settings[uid_str] = 50
-        upsert_user_setting(message.from_user.id, pitch=50)
+        vlabel = "Codka wiilka"
+        user_pitch_settings[uid_str] = 45
+        upsert_user_setting(message.from_user.id, pitch=45)
     user_voice_name[uid_str] = vname
     user_voice_label[uid_str] = vlabel
     upsert_user_setting(message.from_user.id, voice_name=vname, voice_label=vlabel)
