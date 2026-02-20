@@ -1,0 +1,40 @@
+name: Run Telegram Bot (Smart Mode)
+
+on:
+  workflow_dispatch: # Waxaad gacanta ku kicin kartaa markaad rabto
+  schedule:
+    # Waxaan ka dhignay 5-tii saacba mar, laakiin daqiiqadaha ayaan beddelnay (Random-ish)
+    - cron: "17 */5 * * *" 
+
+jobs:
+  run-bot:
+    runs-on: ubuntu-latest
+    # GitHub Actions limit-kiisu waa 360 daqiiqo (6 saac)
+    # Waxaan ka dhignay 280 daqiiqo (4 saac iyo 40 daqiiqo) si uu u xirmo ka hor cron-ka xiga
+    timeout-minutes: 280
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip' # Waxay dedejinaysaa in dependencies-ka aan mar walba la soo dejin
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Run Telegram Bot
+        env:
+          API_ID: ${{ secrets.API_ID }}
+          API_HASH: ${{ secrets.API_HASH }}
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+          SESSION_STRING: ${{ secrets.SESSION_STRING }} # Aad bay muhiim u tahay haddii uu yahay Userbot
+        run: |
+          # Waxaan ku darnay "Sleep" yar bilowga si uusan workflow-gu u noqon mid isku mid ah mar walba
+          sleep $(( ( RANDOM % 60 )  + 1 ))
+          python main.py
