@@ -1,5 +1,4 @@
-pyTelegramBotAPI
+yt-dlp
 flask
-edge-tts
-asyncio
-pymongo
+requests
+telethon
