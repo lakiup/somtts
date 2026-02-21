@@ -1,16 +1,13 @@
 name: Run Telegram Bot (Smart Mode)
 
 on:
-  workflow_dispatch: # Waxaad gacanta ku kicin kartaa markaad rabto
+  workflow_dispatch: 
   schedule:
-    # Waxaan ka dhignay 5-tii saacba mar, laakiin daqiiqadaha ayaan beddelnay (Random-ish)
     - cron: "17 */5 * * *" 
 
 jobs:
   run-bot:
     runs-on: ubuntu-latest
-    # GitHub Actions limit-kiisu waa 360 daqiiqo (6 saac)
-    # Waxaan ka dhignay 280 daqiiqo (4 saac iyo 40 daqiiqo) si uu u xirmo ka hor cron-ka xiga
     timeout-minutes: 280
 
     steps:
@@ -21,7 +18,12 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
-          cache: 'pip' # Waxay dedejinaysaa in dependencies-ka aan mar walba la soo dejin
+          cache: 'pip'
+
+      - name: Install FFmpeg
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
 
       - name: Install dependencies
         run: |
@@ -33,8 +35,7 @@ jobs:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          SESSION_STRING: ${{ secrets.SESSION_STRING }} # Aad bay muhiim u tahay haddii uu yahay Userbot
+          SESSION_STRING: ${{ secrets.SESSION_STRING }}
         run: |
-          # Waxaan ku darnay "Sleep" yar bilowga si uusan workflow-gu u noqon mid isku mid ah mar walba
           sleep $(( ( RANDOM % 60 )  + 1 ))
           python main.py
