@@ -20,11 +20,11 @@ jobs:
           python-version: "3.11"
           cache: 'pip'
 
-      # QAYBTA CUSUB: Setup Deno
-      - name: Setup Deno
-        uses: denoland/setup-deno@v1
+      # Halkan ayaan ku bedelnay Node.js (Aad ayuu ugu fiican yahay yt-dlp)
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
         with:
-          deno-version: v1.x
+          node-version: '20'
 
       - name: Install FFmpeg
         run: |
