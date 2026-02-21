@@ -52,7 +52,7 @@ YDL_OPTS_YOUTUBE = {
 }
 
 YDL_OPTS_PINTEREST = {
-    'format': 'best',
+    'format': 'bestvideo+bestaudio/best',
     'outtmpl': 'video_%(id)s.%(ext)s',
     'quiet': True,
     'no_warnings': True
