@@ -44,7 +44,7 @@ app = Client(
 )
 
 YDL_OPTS_YOUTUBE = {
-    'format': 'best[ext=mp4]/best',
+    'format': 'bestvideo+bestaudio/best',
     'outtmpl': 'video_%(id)s.%(ext)s',
     'quiet': True,
     'no_warnings': True,
