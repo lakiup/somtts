@@ -20,6 +20,12 @@ jobs:
           python-version: "3.11"
           cache: 'pip'
 
+      # QAYBTA CUSUB: Setup Deno
+      - name: Setup Deno
+        uses: denoland/setup-deno@v1
+        with:
+          deno-version: v1.x
+
       - name: Install FFmpeg
         run: |
           sudo apt-get update
@@ -35,7 +41,6 @@ jobs:
           API_ID: ${{ secrets.API_ID }}
           API_HASH: ${{ secrets.API_HASH }}
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-          SESSION_STRING: ${{ secrets.SESSION_STRING }}
         run: |
           sleep $(( ( RANDOM % 60 )  + 1 ))
           python main.py
