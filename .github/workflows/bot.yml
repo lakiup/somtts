@@ -20,12 +20,6 @@ jobs:
           python-version: "3.11"
           cache: pip
 
-      # HALKAN AYAAN KU DARNAY NODE.JS SI YOUTUBE JS ERROR-KA UU U XALLISMO
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
       - name: Install FFmpeg
         run: |
           sudo apt-get update
@@ -35,9 +29,7 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          pip install -r requirements.txt
-          # Xaqiiji in yt-dlp uu mar walba yahay latest version
-          pip install -U yt-dlp 
+          pip install --force-reinstall -r requirements.txt
 
       - name: Run Telegram Bot
         run: |
