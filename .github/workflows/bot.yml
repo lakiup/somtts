@@ -1,4 +1,4 @@
-name: Run Telegram Bot (Stable)
+name: Run Telegram Bot (Smart Mode)
 
 on:
   workflow_dispatch:
@@ -11,21 +11,20 @@ jobs:
     timeout-minutes: 280
 
     steps:
-      - name: Checkout repository
+      - name: Checkout Code
         uses: actions/checkout@v4
 
       - name: Setup Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.11"
+          cache: pip
 
-      - name: Setup Node.js (Required for YouTube)
+      # HALKAN AYAAN KU DARNAY NODE.JS SI YOUTUBE JS ERROR-KA UU U XALLISMO
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: "20"
-
-      - name: Verify Node.js
-        run: node -v
+          node-version: '20'
 
       - name: Install FFmpeg
         run: |
@@ -33,17 +32,14 @@ jobs:
           sudo apt-get install -y ffmpeg
           ffmpeg -version
 
-      - name: Install Python dependencies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
+          # Xaqiiji in yt-dlp uu mar walba yahay latest version
+          pip install -U yt-dlp 
 
-      - name: Upgrade yt-dlp to latest
-        run: |
-          python -m pip install -U yt-dlp
-          yt-dlp --version
-
-      - name: Start Bot
+      - name: Run Telegram Bot
         run: |
           sleep $(( ( RANDOM % 60 ) + 1 ))
           python main.py
