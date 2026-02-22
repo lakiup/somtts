@@ -20,18 +20,13 @@ app = Client(
 )
 
 YDL_OPTS_YOUTUBE = {
-    'format': 'best[ext=mp4]/best',
+    'format': 'best',
     'outtmpl': 'video_%(id)s.%(ext)s',
     'quiet': True,
     'no_warnings': True,
     'cookiefile': 'cookies.txt' if os.path.exists('cookies.txt') else None,
-}
-
-YDL_OPTS_PINTEREST = {
-    'format': 'best',
-    'outtmpl': 'video_%(id)s.%(ext)s',
-    'quiet': True,
-    'no_warnings': True
+    'noplaylist': True,
+    'format_sort': ['res:720', 'ext:mp4:m4a'],
 }
 
 YDL_OPTS_DEFAULT = {
@@ -72,20 +67,11 @@ def download_thumbnail(url, target_path):
 def pick_opts(url):
     if "youtube.com" in url or "youtu.be" in url:
         return YDL_OPTS_YOUTUBE
-    if "pinterest.com" in url:
-        return YDL_OPTS_PINTEREST
     return YDL_OPTS_DEFAULT
 
 @app.on_message(filters.command("start") & filters.private)
 async def start(client, message):
-    await message.reply_text("""Welcome 👋
-
-This bot lets you download videos from
-YouTube, TikTok, Instagram, and more.
-
- 💎 devloper by @laki3012
-
-👉 Just send the video link""", quote=True)
+    await message.reply_text("Bot-ka waa diyaar. Soo dir Link-ga.", quote=True)
 
 @app.on_message(filters.private & filters.text)
 async def handler(client, message):
@@ -100,50 +86,37 @@ async def handler(client, message):
         ydl_opts = pick_opts(url)
 
         with YoutubeDL(ydl_opts) as ydl:
-            info = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=False))
-            
-            duration = info.get("duration")
-            if duration and duration > MAX_DURATION:
-                await msg.edit("Video-gan wuxuu ka dheer yahay 30 daqiiqo.")
-                return
-
             info = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
             filename = ydl.prepare_filename(info)
 
             if not os.path.exists(filename):
-                base_name = os.path.splitext(filename)[0]
-                for ext in ['mp4', 'mkv', 'webm']:
-                    if os.path.exists(f"{base_name}.{ext}"):
-                        filename = f"{base_name}.{ext}"
+                base = os.path.splitext(filename)[0]
+                for ext in ['mp4', 'mkv', 'webm', '3gp']:
+                    if os.path.exists(f"{base}.{ext}"):
+                        filename = f"{base}.{ext}"
                         break
 
         await msg.edit_text("📤 Uploading...")
-
-        caption = info.get('title', 'Video')
         width, height, duration = extract_metadata_from_info(info)
-
+        
         thumb_path = None
         thumb_url = info.get("thumbnail")
         if thumb_url:
-            temp_thumb = f"thumb_{info.get('id')}.jpg"
-            thumb_path = download_thumbnail(thumb_url, temp_thumb)
+            thumb_path = download_thumbnail(thumb_url, f"thumb_{info.get('id')}.jpg")
 
         await app.send_video(
             chat_id=message.chat.id,
             video=filename,
-            caption=caption[:1024],
+            caption=info.get('title', 'Video')[:1024],
             thumb=thumb_path,
-            width=width if width else 0,
-            height=height if height else 0,
+            width=width or 0,
+            height=height or 0,
             duration=int(duration) if duration else 0,
             reply_to_message_id=message.id
         )
 
-        if os.path.exists(filename):
-            os.remove(filename)
-        if thumb_path and os.path.exists(thumb_path):
-            os.remove(thumb_path)
-
+        if os.path.exists(filename): os.remove(filename)
+        if thumb_path and os.path.exists(thumb_path): os.remove(thumb_path)
         await msg.delete()
 
     except Exception as e:
