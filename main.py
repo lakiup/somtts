@@ -62,7 +62,7 @@ def download_thumbnail(url, target_path):
 
 def download_file(url, filename):
     try:
-        with requests.get(url, stream=True) as r:
+        with requests.get(url, stream=True, timeout=30) as r:
             r.raise_for_status()
             with open(filename, 'wb') as f:
                 for chunk in r.iter_content(chunk_size=8192):
@@ -71,16 +71,14 @@ def download_file(url, filename):
     except:
         return False
 
-async def get_cobalt_url(url):
+async def get_cobalt_data(url):
     try:
         api_url = "https://api.cobalt.tools/api/json"
         headers = {"Accept": "application/json", "Content-Type": "application/json"}
         data = {"url": url, "videoQuality": "720", "filenameStyle": "basic"}
-        response = requests.post(api_url, json=data, headers=headers)
+        response = requests.post(api_url, json=data, headers=headers, timeout=20)
         if response.status_code == 200:
-            result = response.json()
-            if result.get("status") in ["stream", "redirect"]:
-                return result.get("url")
+            return response.json()
         return None
     except:
         return None
@@ -107,50 +105,33 @@ async def handler(client, message):
     thumb_path = None
 
     if "youtube.com" in url or "youtu.be" in url:
-        try:
-            direct_url = await get_cobalt_url(url)
-            if direct_url:
-                with YoutubeDL({'quiet': True}) as ydl:
-                    info = await asyncio.get_event_loop().run_in_executor(None, lambda: ydl.extract_info(url, download=False))
-                
-                filename = f"video_{info.get('id')}.mp4"
-                await msg.edit_text("📥 Downloading from YouTube...")
-                
-                if download_file(direct_url, filename):
-                    width, height, duration = extract_metadata_from_info(info)
-                    thumb_url = info.get("thumbnail")
-                    if thumb_url:
-                        thumb_path = download_thumbnail(thumb_url, f"thumb_{info.get('id')}.jpg")
-
-                    await msg.edit_text("📤 Uploading...")
-                    await app.send_video(
-                        chat_id=message.chat.id,
-                        video=filename,
-                        caption=info.get('title', 'YouTube Video'),
-                        thumb=thumb_path,
-                        width=width if width else 0,
-                        height=height if height else 0,
-                        duration=int(duration) if duration else 0,
-                        reply_to_message_id=message.id
-                    )
-                    if os.path.exists(filename): os.remove(filename)
-                    if thumb_path and os.path.exists(thumb_path): os.remove(thumb_path)
-                    await msg.delete()
-                    return
-        except:
-            pass
+        cobalt_res = await get_cobalt_data(url)
+        if cobalt_res and cobalt_res.get("status") in ["stream", "redirect"]:
+            direct_url = cobalt_res.get("url")
+            video_id = url.split("v=")[-1] if "v=" in url else url.split("/")[-1]
+            filename = f"video_{video_id}.mp4"
+            
+            await msg.edit_text("📥 Downloading YouTube Video...")
+            if download_file(direct_url, filename):
+                await msg.edit_text("📤 Uploading...")
+                await app.send_video(
+                    chat_id=message.chat.id,
+                    video=filename,
+                    caption="Downloaded by @laki3012",
+                    reply_to_message_id=message.id
+                )
+                if os.path.exists(filename): os.remove(filename)
+                await msg.delete()
+                return
+            else:
+                await msg.edit_text("❌ Download fashilmay.")
+                return
 
     try:
         loop = asyncio.get_event_loop()
         ydl_opts = YDL_OPTS_PINTEREST if "pinterest.com" in url else YDL_OPTS_DEFAULT
 
         with YoutubeDL(ydl_opts) as ydl:
-            info = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=False))
-            duration = info.get("duration")
-            if duration and duration > MAX_DURATION:
-                await msg.edit("Video-gu waa ka dheer yahay 30 daqiiqo.")
-                return
-
             info = await loop.run_in_executor(None, lambda: ydl.extract_info(url, download=True))
             filename = ydl.prepare_filename(info)
 
