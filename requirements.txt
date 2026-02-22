@@ -1,5 +1,6 @@
 requests
 pyrogram
 tgcrypto
-yt-dlp
+yt-dlp==2024.12.27
+
 
