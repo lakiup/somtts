@@ -1,6 +1,4 @@
-requests
-pyrogram
-tgcrypto
+pyrogram==2.2.2
+tgcrypto==1.2.3
 yt-dlp==2024.12.27
-
-
+requests==2.31.0
