@@ -1,4 +1,6 @@
 pyrogram
 tgcrypto
 yt-dlp
+pytubefix
 requests
+
